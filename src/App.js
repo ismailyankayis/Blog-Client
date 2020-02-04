@@ -6,7 +6,7 @@ import { Grid } from "semantic-ui-react";
 import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
 import AboutUs from "./Pages/AboutUs";
-import Contact from "./Pages/Contact"
+import Contact from "./Pages/Contact";
 
 export default class App extends Component {
   render() {
@@ -19,7 +19,7 @@ export default class App extends Component {
               <p>deneme kolonu</p>
             </Grid.Column>
             <Grid.Column width={10}>
-              <Route path="/" component={Home} />
+              <Route exact path="/" component={Home} />
               <Route path="/AddArticle" component={AddArticle} />
               <Route path="/AboutUs" component={AboutUs} />
               <Route path="/Contact" component={Contact} />
