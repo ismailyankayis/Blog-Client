@@ -7,6 +7,23 @@ import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
 import AboutUs from "./Pages/AboutUs";
 import Contact from "./Pages/Contact";
+import AddCategory from "./Pages/AddCategory";
+import axios from "axios";
+
+axios.defaults.baseURL =
+  "http://localhost:5000/";
+
+axios.interceptors.request.use(
+  async config => {
+    /*if (user) {
+      config.headers.Authorization = "Bearer " + user.user.token;
+    }*/
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 export default class App extends Component {
   render() {
@@ -14,13 +31,17 @@ export default class App extends Component {
       <Container>
         <Router>
           <Navbar />
+          <br/><br/><br/>
           <Grid padded>
             <Grid.Column width={3}>
-              <p>deneme kolonu</p>
+              <br />
+              deneme kolonu
             </Grid.Column>
             <Grid.Column width={10}>
+              <br />
               <Route exact path="/" component={Home} />
               <Route path="/AddArticle" component={AddArticle} />
+              <Route path="/AddCategory" component={AddCategory} />
               <Route path="/AboutUs" component={AboutUs} />
               <Route path="/Contact" component={Contact} />
             </Grid.Column>
