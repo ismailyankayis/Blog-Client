@@ -29,6 +29,16 @@ export default class AddCategory extends Component {
       .catch(error => {});*/
   };
 
+  handleClickDelete = event => {
+    const { value } = event.target;
+
+    let keys = this.state.keywords;
+    console.log("val", value)
+    keys = keys.filter(key => key !== value);
+    this.setState({ keywords: keys });
+    console.log("girdi:",this.state.keywords)
+  };
+
   handleKeyPress = event => {
     var code = event.keyCode || event.which;
     if (code === 13) {
@@ -81,9 +91,9 @@ export default class AddCategory extends Component {
               </Header>
             </Divider>
             {keywords &&
-              keywords.forEach(keyword => {
+              keywords.map(keyword => {
                 return (
-                  <Label>
+                  <Label value={keyword} onClick={this.handleClickDelete}>
                     <Icon name="delete" />
                     {keyword}
                   </Label>

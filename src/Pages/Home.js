@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Card, Icon, Image, Label } from "semantic-ui-react";
-import img1 from "../images/3229.jpg";
+import { Card, Icon, Image, Label, Responsive } from "semantic-ui-react";
+import img1 from "../Images/3229.jpg";
 
 export default class Home extends Component {
   state = {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Image } from "semantic-ui-react";
-import logo from "../images/logo192.png"
+import logo from "../Images/logo192.png";
 
 export default class Navbar extends Component {
   state = { activeItem: "Ana Sayfa" };
@@ -13,12 +13,8 @@ export default class Navbar extends Component {
 
     return (
       <Menu size="massive" tabular color="teal" fixed="top">
-        <Menu.Item as="a" header >
-          <Image
-            size="mini"
-            src={logo}
-            style={{ marginRight: "1.5em" }}
-          />
+        <Menu.Item as="a" header>
+          <Image size="mini" src={logo} style={{ marginRight: "1.5em" }} />
           Project Name
         </Menu.Item>
         <Menu.Item
@@ -27,20 +23,6 @@ export default class Navbar extends Component {
           onClick={this.handleItemClick}
           as={Link}
           to="/"
-        />
-        <Menu.Item
-          name="Makale Ekle"
-          active={activeItem === "Makale Ekle"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/AddArticle"
-        />
-        <Menu.Item
-          name="Kategori Ekle"
-          active={activeItem === "Kategori Ekle"}
-          onClick={this.handleItemClick}
-          as={Link}
-          to="/AddCategory"
         />
         <Menu.Item
           name="Hakkımızda"
