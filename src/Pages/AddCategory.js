@@ -17,29 +17,29 @@ export default class AddCategory extends Component {
   };
 
   handleClickSave = event => {
-    console.log("girdi");
-    /*axios
+    console.log("girdi:");
+    axios
       .post("categories", {
         CategoryName: this.state.categoryName,
         Keywords: this.state.keywords
       })
       .then(response => {
         console.log(response);
+        this.setState({ categoryName: "", keywords : [] });
       })
-      .catch(error => {});*/
+      .catch(error => {});
   };
 
-  handleClickDelete = event => {
-    const { value } = event.target;
-
+  handleClickDelete = (keyword,event) => {
     let keys = this.state.keywords;
-    console.log("val", value)
-    keys = keys.filter(key => key !== value);
+    keys = keys.filter(key => key !== keyword);
     this.setState({ keywords: keys });
-    console.log("girdi:",this.state.keywords)
   };
 
   handleKeyPress = event => {
+    if(event.which === 13) {
+      event.preventDefault();
+    }
     var code = event.keyCode || event.which;
     if (code === 13) {
       //13 is the enter keycode
@@ -53,8 +53,8 @@ export default class AddCategory extends Component {
 
   //Input changed
   handleChange = e => {
-    const { value } = e.target;
-    this.setState({ keyword: value });
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   };
 
   render() {
@@ -66,9 +66,11 @@ export default class AddCategory extends Component {
           <Form.Field>
             <Input
               fluid
+              name="categoryName"
               label="Kategori İsmi"
               placeholder="Kategori ismini giriniz..."
               style={{ marginBottom: 25 }}
+              onChange={this.handleChange}
             />
           </Form.Field>
           <Form.Field>
@@ -79,6 +81,7 @@ export default class AddCategory extends Component {
               labelPosition="right"
               placeholder="Keyword Gir"
               value={this.state.keyword}
+              name="keyword"
               onChange={this.handleChange}
               onKeyPress={this.handleKeyPress}
             />
@@ -93,7 +96,7 @@ export default class AddCategory extends Component {
             {keywords &&
               keywords.map(keyword => {
                 return (
-                  <Label value={keyword} onClick={this.handleClickDelete}>
+                  <Label onClick={() => this.handleClickDelete(keyword)}>
                     <Icon name="delete" />
                     {keyword}
                   </Label>
@@ -102,6 +105,7 @@ export default class AddCategory extends Component {
           </Form.Field>
           <div style={{ textAlign: "center" }}>
             <Button
+              key="saveCategoryButton"
               content="Kaydet"
               color="green"
               onClick={this.handleClickSave}

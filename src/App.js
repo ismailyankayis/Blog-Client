@@ -39,7 +39,6 @@ export default class App extends Component {
               <SubNavbar/>
             </Grid.Column>
             <Grid.Column width={10}>
-              
               <Route exact path="/" component={Home} />
               <Route path="/AddArticle" component={AddArticle} />
               <Route path="/AddCategory" component={AddCategory} />

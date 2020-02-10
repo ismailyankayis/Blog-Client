@@ -25,16 +25,23 @@ export default class AddArticle extends Component {
       { id: "sad21easdas", categoryName: "kategori1", keywords: [] },
       { id: "sad21e32sdas", categoryName: "kategori2", keywords: [] },
       { id: "sad21easd21s", categoryName: "kategori3", keywords: [] }
-    ]
+    ],
+    selectedCategories:[]
   };
 
   componentDidMount() {
     this.setState({ editorContent: localStorage.getItem("editorContent") });
     axios.get("categories").then(res => {
       this.setState({ categories: res.data });
-      console.log("cat:",this.state)
+      console.log("cat:", this.state);
     });
   }
+
+  //Input changed
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
 
   handleChangeEditor = content => {
     localStorage.setItem("editorContent", content);
@@ -65,6 +72,11 @@ export default class AddArticle extends Component {
     return options;
   };
 
+  handleDropdownChange = (event) => {
+    const {value} = event.target;
+    console.log(value);
+  };
+
   render() {
     return (
       <div>
@@ -72,6 +84,7 @@ export default class AddArticle extends Component {
         <Input
           fluid
           label="Başlık"
+          name="title"
           placeholder="Makalenizin başlığını giriniz..."
           style={{ marginBottom: 25 }}
         />
@@ -80,7 +93,9 @@ export default class AddArticle extends Component {
           fluid
           multiple
           selection
+          value={this.state.selectedCategories}
           options={this.generateMultipleDropdownOptions()}
+          onChange={this.handleDropdownChange}
           style={{ marginBottom: 25 }}
         />
         <SunEditor

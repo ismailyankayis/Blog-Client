@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { Menu, Accordion } from "semantic-ui-react";
 
 export default class SubNavbar extends Component {
   state = {};
@@ -9,7 +9,7 @@ export default class SubNavbar extends Component {
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu vertical size="large">
+      <Accordion as={Menu} vertical >
         <Menu.Item>
           <Menu.Header>Kategoriler</Menu.Header>
           <Menu.Menu>
@@ -47,7 +47,7 @@ export default class SubNavbar extends Component {
             />
           </Menu.Menu>
         </Menu.Item>
-      </Menu>
+      </Accordion>
     );
   }
 }

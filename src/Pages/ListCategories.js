@@ -17,6 +17,18 @@ export default class ListCategories extends Component {
       });
   }
 
+  handleClickDelete = _id => {
+    console.log(_id)
+    axios.delete("categories/" + _id)
+    .then(response => {
+      this.setState({ categories: this.state.categories.filter(cat => cat._id != _id) });
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error)
+    });
+  }
+
   render() {
     const { categories } = this.state;
     return (
@@ -42,7 +54,8 @@ export default class ListCategories extends Component {
                 <Table.Cell>{cat.Keywords}</Table.Cell>
                 <Table.Cell textAlign="center">
                 <Button >Düzenle</Button>
-                <Button negative><Icon name="trash alternate" />Sil</Button>
+                <Button negative
+                onClick={() => this.handleClickDelete(cat._id)}><Icon name="trash alternate" />Sil</Button>
                 </Table.Cell>
               </Table.Row>
             );
