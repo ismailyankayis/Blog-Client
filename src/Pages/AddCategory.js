@@ -25,19 +25,19 @@ export default class AddCategory extends Component {
       })
       .then(response => {
         console.log(response);
-        this.setState({ categoryName: "", keywords : [] });
+        this.setState({ categoryName: "", keywords: [] });
       })
       .catch(error => {});
   };
 
-  handleClickDelete = (keyword,event) => {
+  handleClickDelete = (keyword, event) => {
     let keys = this.state.keywords;
     keys = keys.filter(key => key !== keyword);
     this.setState({ keywords: keys });
   };
 
   handleKeyPress = event => {
-    if(event.which === 13) {
+    if (event.which === 13) {
       event.preventDefault();
     }
     var code = event.keyCode || event.which;
@@ -45,8 +45,10 @@ export default class AddCategory extends Component {
       //13 is the enter keycode
       const { value } = event.target;
       if (value !== "") {
-        this.state.keywords.push(value);
-        this.setState({ keyword: "" });
+        if (!this.state.keywords.some(key => key === value)) {
+          this.state.keywords.push(value);
+          this.setState({ keyword: "" });
+        }
       }
     }
   };
