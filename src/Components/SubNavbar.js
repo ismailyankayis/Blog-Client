@@ -37,6 +37,8 @@ export default class SubNavbar extends Component {
               name="Makale Listele"
               active={activeItem === "Makale Listele"}
               onClick={this.handleItemClick}
+              as={Link}
+              to="/ListArticles"
             />
             <Menu.Item
               name="Makale Ekle"

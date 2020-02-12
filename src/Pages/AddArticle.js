@@ -1,22 +1,18 @@
 import React, { Component } from "react";
-import { Button, Input, Dropdown } from "semantic-ui-react";
+import {
+  Button,
+  Input,
+  Dropdown,
+  Form,
+  Divider,
+  Header,
+  Icon,
+  Label
+} from "semantic-ui-react";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import "../App.css";
 import axios from "axios";
-
-axios.interceptors.request.use(
-  async config => {
-    config.headers.Authorization =
-      "Bearer " +
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA5LzA5L2lkZW50aXR5L2NsYWltcy9hY3RvciI6IjdhZTJmY2EwLTEwMTYtNDcxNS04NzlmLWJkYTdiMjFiMzIxNSIsImp0aSI6IjA2MDYxYzVkLWJlYzUtNDZhMC05ZjhjLWExODEyM2NkY2QwYiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdXNlcmRhdGEiOiIzNGFlOTY5Mi00OWRmLTQzNjctODAxYS02YjBhZGNhMWQzOGIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTU4MTA4NjY3N30.juxhkM9T-Qa1Uw87r4WIJeUzRDl3-8KmVFU5FAfdogc";
-
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
 
 export default class AddArticle extends Component {
   state = {
@@ -26,11 +22,18 @@ export default class AddArticle extends Component {
       { id: "sad21e32sdas", categoryName: "kategori2", keywords: [] },
       { id: "sad21easd21s", categoryName: "kategori3", keywords: [] }
     ],
-    selectedCategories:[]
+    selectedCategories: [],
+    keywords: [],
+    keyword: ""
   };
 
   componentDidMount() {
-    this.setState({ editorContent: localStorage.getItem("editorContent") });
+    this.setState({
+      editorContent:
+        localStorage.getItem("editorContent") === null
+          ? ""
+          : localStorage.getItem("editorContent")
+    });
     axios.get("categories").then(res => {
       this.setState({ categories: res.data });
       console.log("cat:", this.state);
@@ -72,12 +75,40 @@ export default class AddArticle extends Component {
     return options;
   };
 
-  handleDropdownChange = (event) => {
-    const {value} = event.target;
+  handleDropdownChange = event => {
+    const { value } = event.target;
     console.log(value);
   };
 
+  handleClickDelete = (keyword,event) => {
+    let keys = this.state.keywords;
+    keys = keys.filter(key => key !== keyword);
+    this.setState({ keywords: keys });
+  };
+
+  handleKeyPress = event => {
+    if (event.which === 13) {
+      event.preventDefault();
+    }
+    var code = event.keyCode || event.which;
+    if (code === 13) {
+      //13 is the enter keycode
+      const { value } = event.target;
+      if (value !== "") {
+        this.state.keywords.push(value);
+        this.setState({ keyword: "" });
+      }
+    }
+  };
+
+  //Input changed
+  handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
   render() {
+    const { keywords } = this.state;
     return (
       <div>
         <h1 className="title">Yeni Makale</h1>
@@ -98,6 +129,37 @@ export default class AddArticle extends Component {
           onChange={this.handleDropdownChange}
           style={{ marginBottom: 25 }}
         />
+        <Form>
+          <Form.Field>
+            <Input
+              icon="tags"
+              iconPosition="left"
+              label={{ tag: true, content: "Keyword" }}
+              labelPosition="right"
+              placeholder="Keyword Gir"
+              value={this.state.keyword}
+              name="keyword"
+              onChange={this.handleChange}
+              onKeyPress={this.handleKeyPress}
+            />
+            <Divider horizontal>
+              <Header as="h4">
+                <Icon name="tag" />
+                Keyword
+              </Header>
+            </Divider>
+            {keywords &&
+              keywords.map(keyword => {
+                return (
+                  <Label onClick={() => this.handleClickDelete(keyword)}>
+                    <Icon name="delete" />
+                    {keyword}
+                  </Label>
+                );
+              })}
+              <br/><br/><br/>
+          </Form.Field>
+        </Form>
         <SunEditor
           setContents={this.state.editorContent}
           onChange={this.handleChangeEditor}

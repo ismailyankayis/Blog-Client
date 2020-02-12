@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Header, Table, Button, Icon } from "semantic-ui-react";
 
-export default class ListCategories extends Component {
-  state = { categories: [] };
+export default class ListArticles extends Component {
+  state = {
+    articles: []
+  };
 
   componentDidMount() {
     axios
-      .get("categories")
+      .get("articles")
       .then(response => {
-        this.setState({ categories: response.data });
+        this.setState({ articles: response.data });
         console.log(response.data);
       })
       .catch(error => {
@@ -17,51 +19,36 @@ export default class ListCategories extends Component {
       });
   }
 
-  handleClickDelete = _id => {
-    console.log(_id);
-    axios
-      .delete("categories/" + _id)
-      .then(response => {
-        this.setState({
-          categories: this.state.categories.filter(cat => cat._id != _id)
-        });
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
   render() {
-    const { categories } = this.state;
+    const { articles } = this.state;
     return (
       <>
-        <h1 className="title">Kategoriler</h1>
+        <h1 className="title">Makaleler</h1>
         <Table celled padded>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell singleLine>Kategori Adı</Table.HeaderCell>
+              <Table.HeaderCell singleLine>Başlık</Table.HeaderCell>
               <Table.HeaderCell>Keyword</Table.HeaderCell>
               <Table.HeaderCell>İşlem</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            {categories.map(cat => {
-              console.log("cat: ", cat);
+            {articles.map(article => {
+              console.log("cat: ", article);
               return (
                 <Table.Row>
                   <Table.Cell>
                     <Header as="h3" textAlign="center">
-                      {cat.CategoryName}
+                      {article.Title}
                     </Header>
                   </Table.Cell>
-                  <Table.Cell>{cat.Keywords}</Table.Cell>
+                  <Table.Cell>{article.Keywords}</Table.Cell>
                   <Table.Cell textAlign="center">
                     <Button>Düzenle</Button>
                     <Button
                       negative
-                      onClick={() => this.handleClickDelete(cat._id)}
+                      onClick={() => this.handleClickDelete(article._id)}
                     >
                       <Icon name="trash alternate" />
                       Sil
