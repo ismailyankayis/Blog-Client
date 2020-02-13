@@ -17,6 +17,7 @@ import axios from "axios";
 export default class AddArticle extends Component {
   state = {
     editorContent: "",
+    title: "",
     categories: [
       { id: "sad21easdas", categoryName: "kategori1", keywords: [] },
       { id: "sad21e32sdas", categoryName: "kategori2", keywords: [] },
@@ -38,6 +39,13 @@ export default class AddArticle extends Component {
       this.setState({ categories: res.data });
       console.log("cat:", this.state);
     });
+    /*axios
+      .get("articles/5e454835b63d2288dc22e8fc")
+      .then(res => {
+        console.log("gelen article: ",res.data);
+        this.setState({ editorContent: res.data.Text });
+      })
+      .catch(err => {});*/
   }
 
   //Input changed
@@ -80,10 +88,27 @@ export default class AddArticle extends Component {
     console.log(value);
   };
 
-  handleClickDelete = (keyword,event) => {
+  handleClickDelete = (keyword, event) => {
     let keys = this.state.keywords;
     keys = keys.filter(key => key !== keyword);
     this.setState({ keywords: keys });
+  };
+
+  handleClickSave = () => {
+    let article = {
+      Title: this.state.title,
+      Text: this.state.editorContent,
+      Keywords: this.state.keywords
+    };
+    axios
+      .post("articles", article)
+      .then(res => {
+        console.log(res.data);
+        localStorage.setItem("editorContent", "");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   handleKeyPress = event => {
@@ -157,7 +182,9 @@ export default class AddArticle extends Component {
                   </Label>
                 );
               })}
-              <br/><br/><br/>
+            <br />
+            <br />
+            <br />
           </Form.Field>
         </Form>
         <SunEditor
@@ -186,7 +213,13 @@ export default class AddArticle extends Component {
             ]
           }}
         />
-        <Button primary>Kaydet</Button>
+        <Button
+          primary
+          style={{ marginTop: 10 }}
+          onClick={this.handleClickSave}
+        >
+          Kaydet
+        </Button>
       </div>
     );
   }

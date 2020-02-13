@@ -11,6 +11,7 @@ import AddCategory from "./Pages/AddCategory";
 import SubNavbar from "./Components/SubNavbar";
 import ListCategories from "./Pages/ListCategories";
 import ListArticles from "./Pages/ListArticles";
+import ArticleDetail from "./Pages/ArticleDetail";
 import axios from "axios";
 
 axios.defaults.baseURL =
@@ -45,6 +46,7 @@ export default class App extends Component {
               <Route path="/AddCategory" component={AddCategory} />
               <Route path="/ListCategories" component={ListCategories} />
               <Route path="/ListArticles" component={ListArticles} />
+              <Route path="/ArticleDetail" component={ArticleDetail} />
               <Route path="/AboutUs" component={AboutUs} />
               <Route path="/Contact" component={Contact} />
             </Grid.Column>
