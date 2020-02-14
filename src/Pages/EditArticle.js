@@ -7,15 +7,14 @@ import {
   Divider,
   Header,
   Icon,
-  Label,
-  Segment
+  Label
 } from "semantic-ui-react";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import "../App.css";
 import axios from "axios";
 
-export default class AddArticle extends Component {
+export default class EditArticle extends Component {
   state = {
     editorContent: "",
     title: "",
@@ -26,23 +25,17 @@ export default class AddArticle extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      editorContent:
-        localStorage.getItem("editorContent") === null
-          ? ""
-          : localStorage.getItem("editorContent")
-    });
     axios.get("categories").then(res => {
       this.setState({ categories: res.data });
       console.log("cat:", this.state);
     });
-    /*axios
+    axios
       .get("articles/5e454835b63d2288dc22e8fc")
       .then(res => {
-        console.log("gelen article: ",res.data);
+        console.log("gelen article: ", res.data);
         this.setState({ editorContent: res.data.Text });
       })
-      .catch(err => {});*/
+      .catch(err => {});
   }
 
   //Input changed
@@ -70,32 +63,15 @@ export default class AddArticle extends Component {
     return options;
   };
 
-  handleDropdownChange = (event, target) => {
-    this.setState({ selectedCategories: target.value });
+  handleDropdownChange = event => {
+    const { value } = event.target;
+    console.log(value);
   };
 
   handleClickDelete = (keyword, event) => {
     let keys = this.state.keywords;
     keys = keys.filter(key => key !== keyword);
     this.setState({ keywords: keys });
-  };
-
-  handleClickSave = () => {
-    let article = {
-      Title: this.state.title,
-      Text: this.state.editorContent,
-      Keywords: this.state.keywords,
-      CategoryIds: this.state.selectedCategories
-    };
-    axios
-      .post("articles", article)
-      .then(res => {
-        console.log(res.data);
-        localStorage.setItem("editorContent", "");
-      })
-      .catch(error => {
-        console.log(error);
-      });
   };
 
   handleKeyPress = event => {
@@ -114,40 +90,27 @@ export default class AddArticle extends Component {
   };
 
   render() {
-    const { keywords } = this.state;
     return (
       <div>
-        <h1 className="title">Yeni Makale</h1>
+        <h1 className="title">{this.state.title}</h1>
+        <Input
+          fluid
+          label="Başlık"
+          name="title"
+          placeholder="Makalenizin başlığını giriniz..."
+          style={{ marginBottom: 25 }}
+        />
+        <Dropdown
+          placeholder="Kategoriler"
+          fluid
+          multiple
+          selection
+          value={this.state.selectedCategories}
+          options={this.generateMultipleDropdownOptions()}
+          onChange={this.handleDropdownChange}
+          style={{ marginBottom: 25 }}
+        />
         <Form>
-          <Segment.Group horizontal>
-            <Segment placeholder size='tiny'>
-              <Header icon>
-                <Icon name="pdf file outline" />
-                No documents are listed for this customer.
-              </Header>
-              <Button primary>Add Document</Button>
-            </Segment>
-            <Segment>
-              <Input
-                fluid
-                label="Başlık"
-                name="title"
-                placeholder="Makalenizin başlığını giriniz..."
-                style={{ marginBottom: 25 }}
-              />
-            </Segment>
-          </Segment.Group>
-          <Dropdown
-            placeholder="Kategoriler"
-            fluid
-            multiple
-            selection
-            //value={this.state.selectedCategories}
-            options={this.generateMultipleDropdownOptions()}
-            onChange={this.handleDropdownChange}
-            style={{ marginBottom: 25 }}
-          />
-
           <Form.Field>
             <Input
               icon="tags"

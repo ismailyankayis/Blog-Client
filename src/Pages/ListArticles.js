@@ -19,6 +19,21 @@ export default class ListArticles extends Component {
       });
   }
 
+  handleClickDelete = _id => {
+    console.log(_id);
+    axios
+      .delete("articles/" + _id)
+      .then(response => {
+        this.setState({
+          articles: this.state.articles.filter(art => art._id != _id)
+        });
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
     const { articles } = this.state;
     return (
@@ -35,7 +50,6 @@ export default class ListArticles extends Component {
 
           <Table.Body>
             {articles.map(article => {
-              console.log("cat: ", article);
               return (
                 <Table.Row>
                   <Table.Cell>
